@@ -53,12 +53,15 @@ def replay(f):
     key = f.__qualname__
     in_key = key + ':inputs'
     out_key = key + ':outputs'
-    count = cache._redis.get(key)
-    inputs = cache._redis.lrange(in_key, 0, -1)
-    outputs = cache._redis.lrange(out_key, 0, -1)
+    count = f.__self__.get_int(key)
+    redis = f.__self__._redis
+    inputs = redis.lrange(in_key, 0, -1)
+    outputs = redis.lrange(out_key, 0, -1)
     print(f'Cache.store was called {count} times')
     for input, output in zip(inputs, outputs):
-        print(f"Cache.store(*('{input}',)) -> {str(output)}")
+        output = output.decode('utf-8')
+        input = input.decode('utf-8')
+        print(f"Cache.store(*({input},)) -> {output}")
 
 # cache = Cache()
 
@@ -78,7 +81,7 @@ def replay(f):
 # print("inputs: {}".format(inputs))
 # print("outputs: {}".format(outputs))
 
-
+# from exercise import replay, Cache
 cache = Cache()
 cache.store('foo')
 cache.store('bar')
