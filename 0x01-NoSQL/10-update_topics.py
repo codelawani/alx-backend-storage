@@ -2,7 +2,11 @@
 """changes all topics of a school document based on the name"""
 
 
-def update_topics(mongo_collection, name, topics):
+from typing import List
+from pymongo import collection
+
+
+def update_topics(mongo_collection: collection, name: str, topics: List[str]) -> None:
     mongo_collection.update_one({'name': name}, {'$set': {
         'topics': topics
     }})
