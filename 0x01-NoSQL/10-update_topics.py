@@ -7,6 +7,6 @@ from pymongo import collection
 
 
 def update_topics(mongo_collection: collection, name: str, topics: List[str]) -> None:
-    mongo_collection.update_one({'name': name}, {'$set': {
+    mongo_collection.update_many({'name': name}, {'$set': {
         'topics': topics
     }})

@@ -6,4 +6,4 @@ from typing import List
 
 
 def schools_by_topic(mongo_collection: collection, topic: str) -> List:
-    return list(mongo_collection.find({'topics': topic}))
+    return mongo_collection.find({'topics': topic})
