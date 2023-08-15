@@ -2,7 +2,9 @@
 """Python script that provides some stats about Nginx logs stored in MongoDB"""
 from pymongo import MongoClient
 
-if __name__ == '__main__':
+
+def log_stats():
+    """Log stats"""
     with MongoClient() as client:
         nginx_coll = client.logs.nginx
         print(nginx_coll.count_documents({}), 'logs')
@@ -14,3 +16,7 @@ if __name__ == '__main__':
         status_count = nginx_coll.count_documents(
             {'method': 'GET', 'path': '/status'})
         print(f'{status_count} status check')
+
+
+if __name__ == '__main__':
+    log_stats()
