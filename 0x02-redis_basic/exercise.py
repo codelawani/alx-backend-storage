@@ -31,7 +31,7 @@ def count_calls(f: Callable) -> Callable:
         Returns:
             Any: Result of the original function call.
         """
-        self._redis.incrby(f.__qualname__, 1)
+        self._redis.incr(f.__qualname__)
         return f(self, *args, **kwargs)
     return wrapper
 
