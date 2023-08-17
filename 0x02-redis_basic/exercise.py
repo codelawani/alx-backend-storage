@@ -6,20 +6,20 @@ import redis
 from uuid import uuid4
 
 
-def count_calls(f: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """
     Decorator that counts the number of times a function is called
     and increments the count in Redis.
 
     Args:
-        f (Callable): The function to be wrapped.
+        mwthod (Callable): The function to be wrapped.
 
     Returns:
         Callable: The wrapper function.
     """
-    key = f.__qualname__
+    key = method.__qualname__
 
-    @wraps(f)
+    @wraps(method)
     def wrapper(self, *args, **kwargs):
         """
         Wrapper function that increments the call count
@@ -34,11 +34,11 @@ def count_calls(f: Callable) -> Callable:
             Any: Result of the original function call.
         """
         self._redis.incr(key)
-        return f(self, *args, **kwargs)
+        return method(self, *args, **kwargs)
     return wrapper
 
 
-def call_history(f: Callable) -> Callable:
+def call_history(method: Callable) -> Callable:
     """
     Decorator that records the inputs and outputs
     of a function call in Redis.
@@ -49,7 +49,7 @@ def call_history(f: Callable) -> Callable:
     Returns:
         Callable: The wrapper function.
     """
-    @wraps(f)
+    @wraps(method)
     def wrapper(self, *args, **kwargs):
         """
         Wrapper function that records function inputs
@@ -63,10 +63,10 @@ def call_history(f: Callable) -> Callable:
         Returns:
             Any: Result of the original function call.
         """
-        in_key = f'{f.__qualname__}:inputs'
-        out_key = f'{f.__qualname__}:outputs'
+        in_key = f'{method.__qualname__}:inputs'
+        out_key = f'{method.__qualname__}:outputs'
         self._redis.rpush(in_key, str(*args))
-        output = f(self, *args)
+        output = method(self, *args)
         self._redis.rpush(out_key, output)
         return output
     return wrapper
