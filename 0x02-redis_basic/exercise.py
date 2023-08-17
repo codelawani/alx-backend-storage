@@ -82,8 +82,8 @@ def replay(f):
 # print("outputs: {}".format(outputs))
 
 # from exercise import replay, Cache
-cache = Cache()
-cache.store('foo')
-cache.store('bar')
-cache.store(42)
-replay(cache.store)
+# cache = Cache()
+# cache.store('foo')
+# cache.store('bar')
+# cache.store(42)
+# replay(cache.store)
