@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Redis Cache Class"""
-from typing import Callable, Any, Union
+from typing import Callable, Any, Optional, Union
 from functools import wraps
 import redis
 from uuid import uuid4
 
 
-def count_calls(f: Callable[..., Any]) -> Callable[..., Any]:
+def count_calls(f: Callable) -> Callable:
     """
     Decorator that counts the number of times a function is called and increments the count in Redis.
 
@@ -17,7 +17,7 @@ def count_calls(f: Callable[..., Any]) -> Callable[..., Any]:
         Callable: The wrapper function.
     """
     @wraps(f)
-    def wrapper(self, *args: Any, **kwargs: Any) -> Any:
+    def wrapper(self, *args, **kwargs):
         """
         Wrapper function that increments the call count and calls the original function.
 
@@ -34,7 +34,7 @@ def count_calls(f: Callable[..., Any]) -> Callable[..., Any]:
     return wrapper
 
 
-def call_history(f: Callable[..., Any]) -> Callable[..., Any]:
+def call_history(f: Callable) -> Callable:
     """
     Decorator that records the inputs and outputs of a function call in Redis.
 
@@ -45,7 +45,7 @@ def call_history(f: Callable[..., Any]) -> Callable[..., Any]:
         Callable: The wrapper function.
     """
     @wraps(f)
-    def wrapper(self, *args: Any, **kwargs: Any) -> Any:
+    def wrapper(self, *args, **kwargs):
         """
         Wrapper function that records function inputs and outputs in Redis and calls the original function.
 
@@ -97,7 +97,7 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable = None) -> Union[str, float, int, bytes]:
+    def get(self, key: str, fn: Optional[callable] = None) -> Union[str, float, int, bytes]:
         """
         Retrieves data from the cache using the given key.
 
@@ -136,7 +136,7 @@ class Cache:
         return self.get(key, fn=lambda v: int(v))
 
 
-def replay(f):
+def replay(f: Callable):
     """
     Replays the history of a function's calls and their inputs and outputs.
 
