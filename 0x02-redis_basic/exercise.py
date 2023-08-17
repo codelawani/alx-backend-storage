@@ -17,6 +17,8 @@ def count_calls(f: Callable) -> Callable:
     Returns:
         Callable: The wrapper function.
     """
+    key = f.__qualname__
+
     @wraps(f)
     def wrapper(self, *args, **kwargs):
         """
@@ -31,7 +33,7 @@ def count_calls(f: Callable) -> Callable:
         Returns:
             Any: Result of the original function call.
         """
-        self._redis.incr(f.__qualname__)
+        self._redis.incr(key)
         return f(self, *args, **kwargs)
     return wrapper
 
