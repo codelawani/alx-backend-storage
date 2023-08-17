@@ -8,7 +8,8 @@ from uuid import uuid4
 
 def count_calls(f: Callable) -> Callable:
     """
-    Decorator that counts the number of times a function is called and increments the count in Redis.
+    Decorator that counts the number of times a function is called
+    and increments the count in Redis.
 
     Args:
         f (Callable): The function to be wrapped.
@@ -19,7 +20,8 @@ def count_calls(f: Callable) -> Callable:
     @wraps(f)
     def wrapper(self, *args, **kwargs):
         """
-        Wrapper function that increments the call count and calls the original function.
+        Wrapper function that increments the call count
+        and calls the original function.
 
         Args:
             self: Instance of the class.
@@ -36,7 +38,8 @@ def count_calls(f: Callable) -> Callable:
 
 def call_history(f: Callable) -> Callable:
     """
-    Decorator that records the inputs and outputs of a function call in Redis.
+    Decorator that records the inputs and outputs
+    of a function call in Redis.
 
     Args:
         f (Callable): The function to be wrapped.
@@ -47,7 +50,8 @@ def call_history(f: Callable) -> Callable:
     @wraps(f)
     def wrapper(self, *args, **kwargs):
         """
-        Wrapper function that records function inputs and outputs in Redis and calls the original function.
+        Wrapper function that records function inputs
+        and outputs in Redis and calls the original function.
 
         Args:
             self: Instance of the class.
@@ -68,7 +72,8 @@ def call_history(f: Callable) -> Callable:
 
 class Cache:
     """
-    A class that provides caching functionality using Redis and decorators.
+    A class that provides caching functionality
+    using Redis and decorators.
     """
 
     def __init__(self) -> None:
@@ -97,13 +102,15 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Optional[callable] = None) -> Union[str, float, int, bytes]:
+    def get(self, key: str,
+            fn: Optional[callable] = None) -> Union[str, float, int, bytes]:
         """
         Retrieves data from the cache using the given key.
 
         Args:
             key (str): The key associated with the cached data.
-            fn (Callable, optional): A function to transform the retrieved value. Defaults to None.
+            fn (Callable, optional): A function to transform
+            the retrieved value. Defaults to None.
 
         Returns:
             Union[str, float, int, bytes]: The retrieved data.
@@ -138,7 +145,8 @@ class Cache:
 
 def replay(f: Callable):
     """
-    Replays the history of a function's calls and their inputs and outputs.
+    Replays the history of a function's calls
+    and their inputs and outputs.
 
     Args:
         f: The function whose history will be replayed.
